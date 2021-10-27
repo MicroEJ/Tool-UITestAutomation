@@ -1,0 +1,30 @@
+<!--
+	Ivy
+	
+	 Copyright 2021 MicroEJ Corp. All rights reserved.
+	 This library is provided in source code for use, modification and test, subject to license terms.
+	 Any modification of the source code will break MicroEJ Corp. warranties on the whole library.
+-->
+
+<ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:ej="https://developer.microej.com" ej:version="2.0.0">
+	<info organisation="ej.tool.frontpanel" module="fp-test-automation-tool" status="integration" revision="2.0.0">
+		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-std-javalib" revision="2.0.+"/>
+	</info>
+	<configurations defaultconfmapping="default->default;provided->provided">
+		<conf name="default" visibility="public" description="Runtime dependencies to other artifacts"/>
+		<conf name="provided" visibility="public" description="Compile-time dependencies to APIs provided by the platform"/>
+		<conf name="documentation" visibility="public" description="Documentation related to the artifact (javadoc, PDF)"/>
+		<conf name="source" visibility="public" description="Source code"/>
+		<conf name="dist" visibility="public" description="Contains extra files such as README.md, licenses"/>
+		<conf name="test" visibility="private" description="Dependencies for test execution. It is not required for normal use of the application, and is only available for the test compilation and execution phases."/>
+	</configurations>
+	
+	<publications>
+		<!-- keep this empty if no specific artifact to publish -->
+		<!-- must be here in order to avoid all configurations for the default artifact -->
+	</publications>
+	
+	<dependencies>
+		<dependency org="ej.tool.frontpanel" name="widget" rev="2.0.0"/>	
+	</dependencies>
+</ivy-module>
