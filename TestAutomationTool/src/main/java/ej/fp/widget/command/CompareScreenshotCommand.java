@@ -1,9 +1,8 @@
 /*
  * Java
  *
- * Copyright 2021 MicroEJ Corp. All rights reserved.
- * This library is provided in source code for use, modification and test, subject to license terms.
- * Any modification of the source code will break MicroEJ Corp. warranties on the whole library.
+ * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+ * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.fp.widget.command;
 
@@ -16,6 +15,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ej.fp.Image;
 import ej.fp.widget.Display;
@@ -29,6 +32,19 @@ import ej.fp.widget.util.ScreenshotComparator;
 public class CompareScreenshotCommand extends Command<Display> {
 
 	private String id;
+	private static final Logger LOGGER = Logger.getLogger(CompareScreenshotCommand.class.getName());
+
+	/**
+	 * Constructor.
+	 */
+	public CompareScreenshotCommand() {
+		super();
+		Handler consoleHandler = new ConsoleHandler();
+		consoleHandler.setLevel(Level.ALL);
+		LOGGER.addHandler(consoleHandler);
+		LOGGER.setLevel(Level.ALL);
+		LOGGER.setUseParentHandlers(false);
+	}
 
 	/**
 	 * Parses the screenshot command information to save the screenshot id.
@@ -44,7 +60,7 @@ public class CompareScreenshotCommand extends Command<Display> {
 	@Override
 	public void execute() throws CommandExecutionException {
 		Display display = getWidget(null);
-		Image displayBuffer = display.getDrawingBuffer();
+		Image displayBuffer = Menu.getVisibleBuffer(display);
 		int[] imageBuffer = new int[displayBuffer.getWidth() * displayBuffer.getHeight()];
 		displayBuffer.getPixels(imageBuffer);
 		byte[] buffer = new byte[imageBuffer.length * 4];
@@ -68,6 +84,7 @@ public class CompareScreenshotCommand extends Command<Display> {
 				new BufferedInputStream(new FileInputStream(screenshotFile)))) {
 			if (dataInputStream.read(buffer) == imageBuffer.length * 4) {
 				success = ScreenshotComparator.compare(buffer, imageBuffer);
+				LOGGER.info("Result of Comparison of '" + screenTested + "': " + success); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			if (success) {

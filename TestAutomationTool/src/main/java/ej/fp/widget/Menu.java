@@ -1,9 +1,8 @@
 /*
  * Java
  *
- * Copyright 2021 MicroEJ Corp. All rights reserved.
- * This library is provided in source code for use, modification and test, subject to license terms.
- * Any modification of the source code will break MicroEJ Corp. warranties on the whole library.
+ * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+ * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.fp.widget;
 
@@ -42,6 +41,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 
 import ej.fp.Device;
+import ej.fp.Image;
 import ej.fp.widget.Pointer.PointerListener;
 import ej.fp.widget.command.Command;
 import ej.fp.widget.command.CommandBuilder;
@@ -298,9 +298,10 @@ public class Menu {
 	 * Saves the screen in a .raw file under the subfolder used for the scenario being recorded.
 	 */
 	public void takeScreenshot() {
+		LOGGER.fine("Taking a screenshot."); //$NON-NLS-1$
 		this.activityLogger.push(Messages.getString(Messages.SCREENSHOT_TAKEN));
 		if (this.recorderState) {
-			Display display = Device.getDevice().getWidget(Display.class);
+			Display display = Device.getDevice().getWidget(Display.class, null);
 			ej.fp.Image displayBuffer = display.visibleBuffer;
 			String timestamp = LocalDateTime.now().toString();
 			timestamp = timestamp.replace("-", "").replace("T", "").replace(":", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
@@ -418,5 +419,16 @@ public class Menu {
 			Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage(), e);
 			JOptionPane.showMessageDialog(null, Messages.getString(Messages.SAVE_FILE_ERROR));
 		}
+	}
+
+	/**
+	 * Returns the visible buffer of a given display.
+	 *
+	 * @param display
+	 *            the display
+	 * @return the visible buffer
+	 */
+	public static Image getVisibleBuffer(Display display) {
+		return display.visibleBuffer;
 	}
 }

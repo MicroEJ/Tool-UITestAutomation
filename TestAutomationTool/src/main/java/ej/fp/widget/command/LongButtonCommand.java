@@ -1,8 +1,9 @@
 /*
  * Java
  *
- * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
- * Use of this source code is governed by a BSD-style license that can be found with this software.
+ * Copyright 2022 MicroEJ Corp. All rights reserved.
+ * This library is provided in source code for use, modification and test, subject to license terms.
+ * Any modification of the source code will break MicroEJ Corp. warranties on the whole library.
  */
 package ej.fp.widget.command;
 
@@ -10,12 +11,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ej.fp.widget.Menu;
-import ej.fp.widget.recorder.RecorderButton;
+import ej.fp.widget.recorder.RecorderLongButton;
 
 /**
  * Represents a button press command.
  */
-public abstract class ButtonCommand extends Command<RecorderButton> {
+public abstract class LongButtonCommand extends Command<RecorderLongButton> {
 
 	/**
 	 * Id of the recorded widget.
@@ -33,8 +34,8 @@ public abstract class ButtonCommand extends Command<RecorderButton> {
 	}
 
 	@Override
-	protected Class<RecorderButton> getMyType() {
-		return RecorderButton.class;
+	protected Class<RecorderLongButton> getMyType() {
+		return RecorderLongButton.class;
 	}
 
 	/**
@@ -48,7 +49,7 @@ public abstract class ButtonCommand extends Command<RecorderButton> {
 	 *            widget's id
 	 * @return the command
 	 */
-	public static <T extends ButtonCommand> T build(Class<T> clazz, String label) {
+	public static <T extends LongButtonCommand> T build(Class<T> clazz, String label) {
 		T command = null;
 		try {
 			command = clazz.newInstance();
@@ -63,7 +64,7 @@ public abstract class ButtonCommand extends Command<RecorderButton> {
 	/**
 	 * Represents a button press command.
 	 */
-	public static class Press extends ButtonCommand {
+	public static class Press extends LongButtonCommand {
 
 		@Override
 		public void execute() {
@@ -74,7 +75,7 @@ public abstract class ButtonCommand extends Command<RecorderButton> {
 	/**
 	 * Represents a button release command.
 	 */
-	public static class Release extends ButtonCommand {
+	public static class Release extends LongButtonCommand {
 
 		@Override
 		public void execute() {

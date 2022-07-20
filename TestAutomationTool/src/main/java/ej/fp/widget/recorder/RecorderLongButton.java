@@ -1,37 +1,38 @@
 /*
  * Java
  *
- * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
- * Use of this source code is governed by a BSD-style license that can be found with this software.
+ * Copyright 2022 MicroEJ Corp. All rights reserved.
+ * This library is provided in source code for use, modification and test, subject to license terms.
+ * Any modification of the source code will break MicroEJ Corp. warranties on the whole library.
  */
 package ej.fp.widget.recorder;
 
 import ej.fp.Widget.WidgetAttribute;
 import ej.fp.Widget.WidgetDescription;
-import ej.fp.widget.Button;
+import ej.fp.widget.LongButton;
 import ej.fp.widget.Menu;
-import ej.fp.widget.command.ButtonCommand;
 import ej.fp.widget.command.Command.Listener;
 import ej.fp.widget.command.CommandRecorder;
+import ej.fp.widget.command.LongButtonCommand;
 
 /**
  * Button events recorder.
  */
 @WidgetDescription(attributes = { @WidgetAttribute(name = "label"), @WidgetAttribute(name = "x"),
 		@WidgetAttribute(name = "y"), @WidgetAttribute(name = "skin"), @WidgetAttribute(name = "pushedSkin"),
-		@WidgetAttribute(name = "filter", isOptional = true),
+		@WidgetAttribute(name = "longPeriod", isOptional = true), @WidgetAttribute(name = "filter", isOptional = true),
 		@WidgetAttribute(name = "listenerClass", isOptional = true) })
-public class RecorderButton extends Button implements CommandRecorder<RecorderButton.ButtonListener> {
+public class RecorderLongButton extends LongButton implements CommandRecorder<RecorderLongButton.ButtonListener> {
 
 	@Override
 	public void mousePressed(int x, int y, MouseButton button) {
-		Menu.getInstance().saveCommand(ButtonCommand.build(ButtonCommand.Press.class, this.getLabel()));
+		Menu.getInstance().saveCommand(LongButtonCommand.build(LongButtonCommand.Press.class, this.getLabel()));
 		super.mousePressed(x, y, button);
 	}
 
 	@Override
 	public void mouseReleased(int x, int y, MouseButton button) {
-		Menu.getInstance().saveCommand(ButtonCommand.build(ButtonCommand.Release.class, this.getLabel()));
+		Menu.getInstance().saveCommand(LongButtonCommand.build(LongButtonCommand.Release.class, this.getLabel()));
 		super.mouseReleased(x, y, button);
 	}
 
@@ -41,9 +42,9 @@ public class RecorderButton extends Button implements CommandRecorder<RecorderBu
 	 * Button recorder listener.
 	 */
 	public static class ButtonListener implements Listener {
-		RecorderButton button;
+		RecorderLongButton button;
 
-		ButtonListener(RecorderButton button) {
+		ButtonListener(RecorderLongButton button) {
 			this.button = button;
 		}
 

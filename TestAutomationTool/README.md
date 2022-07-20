@@ -1,13 +1,13 @@
 # Overview
 
-This repository provides an automated tool for UI testing.  It is used to record scenario of events (on `Pointer` and `Button`) and replay the scenario. While replaying a scenario, this tool can also compare the screen with screenshots captured while recording scenario.
+This repository provides an automated tool for UI testing.  It is used to record scenario of events (on `Pointer` , `Button` and `LongButton`) and replay the scenario. While replaying a scenario, this tool can also compare the screen with screenshots captured while recording scenario.
 
 ![TAT](TAT.png "Test Automation Tool")
 
 # Architecture
 
-This module extends the classes `Pointer` and `Button` of the `FrontPanel` then the tool overrides its events and adds a recording step before sending the event to the MicroEJ Application. It can also capture a screenshot so when the user replays it, they will have a point to compare the current screen with the screen captured during the recording process. The screen capture process stores the current displayed pixels in a .raw file.
-The replay process is done by replicating an event from the `Pointer` or `Button` by getting the widget by its label name and calling the event recorded.
+This module extends the classes `Pointer` , `Button` and `LongButton` of the `FrontPanel` then the tool overrides its events and adds a recording step before sending the event to the MicroEJ Application. It can also capture a screenshot so when the user replays it, they will have a point to compare the current screen with the screen captured during the recording process. The screen capture process stores the current displayed pixels in a .raw file.
+The replay process is done by replicating an event from the `Pointer` or `Button` or `LongButton` by getting the widget by its label name and calling the event recorded.
 
 # Usage
 
@@ -16,13 +16,15 @@ The replay process is done by replicating an event from the `Pointer` or `Button
 - Add the following line to the platform-fp's `module.ivy`:
 
    ```xml
-       <dependency org="ej.tool.frontpanel" name="fp-test-automation-tool" rev="2.0.0"/>
+       <dependency org="ej.tool.frontpanel" name="fp-test-automation-tool" rev="2.1.0"/>
    ```
-- Update the Front Panel file(s) (`.fp` in `src/main/resources`) to record and simulate `Pointer` and `Button` events:
+- Update the Front Panel file(s) (`.fp` in `src/main/resources`) to record and simulate `Pointer` , `Button` and `LongButton` events:
 
   - Replace `ej.fp.widget.Pointer` by `ej.fp.widget.recorder.RecorderPointer`.
 
   - Replace `ej.fp.widget.Button` by `ej.fp.widget.recorder.RecorderButton`.
+
+  - Replace `ej.fp.widget.LongButton` by `ej.fp.widget.recorder.RecorderLongButton`.
 
 - Build the platform-configuration project.
 
@@ -69,6 +71,5 @@ Cannot be used on embedded devices.
 
 ---  
 _Markdown_   
-_Copyright 2021 MicroEJ Corp. All rights reserved._
-_This library is provided in source code for use, modification and test, subject to license terms._
-_Any modification of the source code will break MicroEJ Corp. warranties on the whole library._
+_Copyright 2021-2022 MicroEJ Corp. All rights reserved._
+_Use of this source code is governed by a BSD-style license that can be found with this software._
