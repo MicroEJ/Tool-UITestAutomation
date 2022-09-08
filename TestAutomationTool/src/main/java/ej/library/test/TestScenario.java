@@ -9,6 +9,7 @@ package ej.library.test;
 import com.is2t.hil.HIL;
 
 import ej.fp.widget.Menu;
+import ej.fp.widget.command.CompareScreenshotException;
 import ej.fp.widget.util.FileHelper;
 
 /**
@@ -50,21 +51,27 @@ public class TestScenario {
 	 * Runs the scenario, this will generate a report file named {@code testTIMESTAMP.report}, the TIMESTAMP is the ID
 	 * of the file and it is the time which the file was generated.
 	 *
+	 * @return <code>false</code> if screenshot comparison fails.
+	 *
 	 * @throws Exception
 	 *             if the execution failed or couldn't be finished
 	 */
-	public static void fromFile() throws Exception {
+	public static boolean fromFile() throws Exception {
 		HIL.getInstance().refreshContent(inputBuffer);
 		HIL.getInstance().refreshContent(buffersLength);
 		final String foldername = new String(inputBuffer, 0, buffersLength[0]);
 		try {
 			Menu.getInstance().playFromFile(foldername);
+		} catch (CompareScreenshotException e) {
+			return false;
 		} finally {
 			final String output = FileHelper.getLastReportFilePath();
 			output.getChars(0, output.length(), outputBuffer, 0);
 			buffersLength[1] = output.length();
 			HIL.getInstance().flushContent(outputBuffer);
 			HIL.getInstance().flushContent(buffersLength);
+
 		}
+		return true;
 	}
 }

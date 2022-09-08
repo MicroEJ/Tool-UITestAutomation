@@ -68,9 +68,9 @@ public class TestScenario {
 		try {
 			filename.getChars(0, filename.length(), inputBuffer, 0);
 			buffersLength[0] = filename.length();
-			fromFile();
-			success = true;
+			success = fromFile();
 		} catch (Exception e) {
+
 			Throwable cause = e.getCause();
 			if (cause != null) {
 				throw (Exception) cause;
@@ -83,10 +83,12 @@ public class TestScenario {
 	/**
 	 * Internal function to run the scenario.
 	 *
+	 * @return <code>false</code> if screenshot comparison fails.
+	 *
 	 * @throws Exception
 	 *             if an exception happens.
 	 */
-	public static native void fromFile() throws Exception;
+	public static native boolean fromFile() throws Exception;
 
 	/**
 	 * Initializes the communications channel with the mock.

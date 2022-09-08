@@ -1,0 +1,19 @@
+#
+# Copyright 2022 MicroEJ Corp. All rights reserved.
+# This Software has been designed or modified by MicroEJ Corp.
+# MicroEJ Corp. grants to Zebra the non-exclusive right to freely use, modify and distribute this Software.
+#
+
+include:
+  - project: 'I0271_CI/I0271_Gitlab_Templates'
+    file: '/templates/Multi-Module-Flow.gitlab-ci.yml'
+
+---
+
+multibuild:
+  - name: test-automation-junit
+    variables:
+      MODULE_DIR: "TestAutomationJUnitLibrary"
+  - name: fp-test-automation-tool
+    variables:
+      MODULE_DIR: "TestAutomationTool"
