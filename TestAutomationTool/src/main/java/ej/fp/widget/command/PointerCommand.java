@@ -1,7 +1,7 @@
 /*
  * Java
  *
- * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+ * Copyright 2021-2023 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.fp.widget.command;
@@ -13,7 +13,7 @@ import ej.fp.widget.Menu;
 import ej.fp.widget.recorder.RecorderPointer;
 
 /**
- * Base class for pointer related commands
+ * Base class for pointer related commands.
  */
 public abstract class PointerCommand extends Command<RecorderPointer> {
 
@@ -42,9 +42,9 @@ public abstract class PointerCommand extends Command<RecorderPointer> {
 	 * Creates a pointer command with the x an y specified.
 	 *
 	 * @param <T>
-	 *            type which extends PointerCommand
+	 *            type which extends PointerCommand.
 	 * @param clazz
-	 *            actual type of the command to be created
+	 *            actual type of the command to be created.
 	 *
 	 * @param x2
 	 *            x of the new command.
@@ -60,7 +60,7 @@ public abstract class PointerCommand extends Command<RecorderPointer> {
 			command.y = y2;
 		} catch (InstantiationException | IllegalAccessException e) {
 			Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage(), e);
-			Menu.getInstance().toggleRecordState();
+			Menu.getInstance().toggleRecordState(null);
 		}
 		return command;
 	}

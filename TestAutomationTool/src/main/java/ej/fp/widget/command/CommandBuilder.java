@@ -1,7 +1,7 @@
 /*
  * Java
  *
- * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+ * Copyright 2021-2023 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.fp.widget.command;
@@ -10,12 +10,12 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * Helper class for parse and serialization of commands
+ * Helper class for parse and serialization of commands.
  */
 public class CommandBuilder {
 
 	private static BiMap<String, Class<? extends Command<?>>> mappedCommands;
-
+	private static final String COMMA = ","; //$NON-NLS-1$
 	static {
 		mappedCommands = new BiMap<>();
 		register("pause", WaitCommand.class); //$NON-NLS-1$
@@ -27,27 +27,42 @@ public class CommandBuilder {
 		register("buttonRelease", ButtonCommand.Release.class); //$NON-NLS-1$
 		register("buttonLongPress", LongButtonCommand.Press.class); //$NON-NLS-1$
 		register("buttonLongRelease", LongButtonCommand.Release.class); //$NON-NLS-1$
+		register("JoystickUpPress", JoystickCommand.UpPress.class); //$NON-NLS-1$
+		register("JoystickUpRelease", JoystickCommand.UpRelease.class); //$NON-NLS-1$
+		register("JoystickDownPress", JoystickCommand.DownPress.class); //$NON-NLS-1$
+		register("JoystickDownRelease", JoystickCommand.DownRelease.class); //$NON-NLS-1$
+		register("JoystickLeftPress", JoystickCommand.LeftPress.class); //$NON-NLS-1$
+		register("JoystickLeftRelease", JoystickCommand.LeftRelease.class); //$NON-NLS-1$
+		register("JoystickRightPress", JoystickCommand.RightPress.class); //$NON-NLS-1$
+		register("JoystickRightRelease", JoystickCommand.RightRelease.class); //$NON-NLS-1$
+		register("JoystickEnterPress", JoystickCommand.EnterPress.class); //$NON-NLS-1$
+		register("JoystickEnterRelease", JoystickCommand.EnterRelease.class); //$NON-NLS-1$
+		register("overrideScreenshot", OverrideScreenshotCommand.class); //$NON-NLS-1$
+	}
+
+	// Prevents initialization.
+	private CommandBuilder() {
 	}
 
 	/**
-	 * Registers the given command in the builder associated with the new tag
+	 * Registers the given command in the builder associated with the new tag.
 	 *
 	 * @param tag
-	 *            key for serialization
+	 *            key for serialization.
 	 * @param command
-	 *            the command associated with the key
+	 *            the command associated with the key.
 	 */
 	public static void register(String tag, Class<? extends Command<?>> command) {
 		mappedCommands.put(tag, command);
 	}
 
 	/**
-	 * Creates a command from its serialization
+	 * Creates a command from its serialization.
 	 *
 	 * @param <T>
-	 *            actual type of the serialized command
+	 *            actual type of the serialized command.
 	 * @param s
-	 *            serialized command
+	 *            serialized command.
 	 * @return a command
 	 * @throws InstantiationException
 	 *             failure to use newInstance
@@ -55,7 +70,7 @@ public class CommandBuilder {
 	 *             failure to use reflection
 	 */
 	public static <T extends Command<?>> T parse(String s) throws InstantiationException, IllegalAccessException {
-		String[] tokens = s.split(","); //$NON-NLS-1$
+		String[] tokens = s.split(COMMA);
 		@SuppressWarnings("unchecked") // this cast is safe
 		Class<T> clazz = (Class<T>) mappedCommands.get(tokens[0]);
 		T command = clazz.newInstance();
@@ -64,22 +79,19 @@ public class CommandBuilder {
 	}
 
 	/**
-	 * Serializes a command
+	 * Serializes a command.
 	 *
 	 * @param <T>
-	 *            actual type of the serialized command
+	 *            actual type of the serialized command.
 	 * @param command
-	 *            command to be serialized
+	 *            command to be serialized.
 	 * @return string containing the command serialized representation
 	 */
 	public static <T extends Command<?>> String serialize(T command) {
 		@SuppressWarnings("unchecked") // this cast is safe
 		String key = mappedCommands.getKey((Class<? extends Command<?>>) command.getClass());
 
-		return key + "," + command.serialize(); //$NON-NLS-1$
-	}
-
-	private CommandBuilder() {
+		return key + COMMA + command.serialize();
 	}
 
 	private static class BiMap<K extends Serializable, V extends Serializable> extends HashMap<K, V> {

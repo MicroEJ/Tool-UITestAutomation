@@ -1,7 +1,7 @@
 /*
  * Java
  *
- * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+ * Copyright 2021-2023 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.library.test;
@@ -58,17 +58,21 @@ public class TestScenario {
 	 *
 	 * @param filename
 	 *            name of the scenario file
+	 *
+	 * @param override
+	 *            enables or disables override mode.
+	 *
 	 * @return a TestScenario object containing information about the execution
 	 * @throws Exception
 	 *             if the execution failed or couldn't be finished
 	 */
-	public static TestScenario fromFile(String filename) throws Exception {
+	public static TestScenario fromFile(String filename, boolean override) throws Exception {
 		boolean success = false;
 		String causeOfFailure = null;
 		try {
 			filename.getChars(0, filename.length(), inputBuffer, 0);
 			buffersLength[0] = filename.length();
-			success = fromFile();
+			success = fromFile(override);
 		} catch (Exception e) {
 
 			Throwable cause = e.getCause();
@@ -83,12 +87,15 @@ public class TestScenario {
 	/**
 	 * Internal function to run the scenario.
 	 *
+	 * @param override
+	 *            enables or disables override mode.
+	 * 
 	 * @return <code>false</code> if screenshot comparison fails.
 	 *
 	 * @throws Exception
 	 *             if an exception happens.
 	 */
-	public static native boolean fromFile() throws Exception;
+	public static native boolean fromFile(boolean override) throws Exception;
 
 	/**
 	 * Initializes the communications channel with the mock.

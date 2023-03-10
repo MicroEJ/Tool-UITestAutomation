@@ -1,10 +1,13 @@
 /*
  * Java
  *
- * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+ * Copyright 2021-2023 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.library.test;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.is2t.hil.HIL;
 
@@ -17,14 +20,14 @@ import ej.fp.widget.util.FileHelper;
  * is responsible for running such scenario and getting the report file.
  */
 public class TestScenario {
-
-	/** Buffer for SNI to send strings */
+	private static final Logger LOGGER = Logger.getLogger(TestScenario.class.getName());
+	/** Buffer for SNI to send strings. */
 	public static char[] inputBuffer;
 
-	/** Buffer for SNI to receive strings */
+	/** Buffer for SNI to receive strings. */
 	public static char[] outputBuffer;
 
-	/** Length of the strings written to the buffers, index 0 for the input and 1 for output */
+	/** Length of the strings written to the buffers, index 0 for the input and 1 for output. */
 	public static int[] buffersLength;
 
 	private TestScenario() {
@@ -32,14 +35,14 @@ public class TestScenario {
 	}
 
 	/**
-	 * Initializes SNI buffers
+	 * Initializes SNI buffers.
 	 *
 	 * @param input
-	 *            the input buffer
+	 *            the input buffer.
 	 * @param output
-	 *            the output buffer
+	 *            the output buffer.
 	 * @param lengths
-	 *            length of the strings currently in the buffers, index 0 for input and 1 for output
+	 *            length of the strings currently in the buffers, index 0 for input and 1 for output.
 	 */
 	public static void init(char[] input, char[] output, int[] lengths) {
 		inputBuffer = input;
@@ -51,18 +54,26 @@ public class TestScenario {
 	 * Runs the scenario, this will generate a report file named {@code testTIMESTAMP.report}, the TIMESTAMP is the ID
 	 * of the file and it is the time which the file was generated.
 	 *
+	 * @param override
+	 *            enables or disables override mode.
+	 *
 	 * @return <code>false</code> if screenshot comparison fails.
 	 *
 	 * @throws Exception
 	 *             if the execution failed or couldn't be finished
 	 */
-	public static boolean fromFile() throws Exception {
+	public static boolean fromFile(boolean override) throws Exception {
 		HIL.getInstance().refreshContent(inputBuffer);
 		HIL.getInstance().refreshContent(buffersLength);
 		final String foldername = new String(inputBuffer, 0, buffersLength[0]);
 		try {
-			Menu.getInstance().playFromFile(foldername);
+			if (override) {
+				Menu.getInstance().updateFromFile(foldername);
+			} else {
+				Menu.getInstance().playFromFile(foldername);
+			}
 		} catch (CompareScreenshotException e) {
+			LOGGER.log(Level.SEVERE, e.getMessage(), e);
 			return false;
 		} finally {
 			final String output = FileHelper.getLastReportFilePath();

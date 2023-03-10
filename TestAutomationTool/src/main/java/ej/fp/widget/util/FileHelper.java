@@ -1,7 +1,7 @@
 /*
  * Java
  *
- * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+ * Copyright 2021-2023 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.fp.widget.util;
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ej.fp.widget.Menu;
@@ -19,10 +20,15 @@ import ej.fp.widget.Menu;
  * Handles creation of files and stores the last file.
  */
 public class FileHelper {
-
-	private static String lastReportFileID = ""; //$NON-NLS-1$
-	private static String lastCommandFileID = ""; //$NON-NLS-1$
-	private static String subfolder = ""; //$NON-NLS-1$
+	private static final Logger LOGGER = Logger.getLogger(FileHelper.class.getName());
+	private static final String EMPTY_TEXT = ""; //$NON-NLS-1$
+	private static final String T_TEXT = "T"; //$NON-NLS-1$
+	private static final String DASH_SEPARATOR = "-"; //$NON-NLS-1$
+	private static final String TWO_POINT_SEPARATOR = ":"; //$NON-NLS-1$
+	private static final String POINT = "."; //$NON-NLS-1$
+	private static String lastReportFileID = EMPTY_TEXT;
+	private static String lastCommandFileID = EMPTY_TEXT;
+	private static String subfolder = EMPTY_TEXT;
 	private static String lastReportFilePath;
 
 	private FileHelper() {
@@ -51,8 +57,9 @@ public class FileHelper {
 	 */
 	public static void createNewReportFile() {
 		String timestamp = LocalDateTime.now().toString();
-		timestamp = timestamp.replace("-", "").replace("T", "").replace(":", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		timestamp = timestamp.substring(0, timestamp.indexOf(".")); //$NON-NLS-1$
+		timestamp = timestamp.replace(DASH_SEPARATOR, EMPTY_TEXT).replace(T_TEXT, EMPTY_TEXT)
+				.replace(TWO_POINT_SEPARATOR, EMPTY_TEXT);
+		timestamp = timestamp.substring(0, timestamp.indexOf(POINT));
 		File file = Paths.get(Menu.getInstance().getFolder(), subfolder, "test" + timestamp + ".report").toFile(); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			if (!file.exists() && !new File(file.getParent()).exists()) {
@@ -62,7 +69,8 @@ public class FileHelper {
 			lastReportFilePath = file.getAbsolutePath();
 			lastReportFileID = timestamp;
 		} catch (IOException e) {
-			Logger.getAnonymousLogger().warning(e.getMessage());
+			String msg = "Failed to create report file ..." + e.getMessage(); //$NON-NLS-1$
+			LOGGER.log(Level.FINE, msg, e);
 		}
 	}
 
@@ -76,16 +84,33 @@ public class FileHelper {
 	}
 
 	/**
+	 * Gets a default scenario name generated form the current timestamp.
+	 *
+	 * @return the scenario name generated.
+	 */
+	public static String getDefaultScenarioName() {
+		String timestamp = LocalDateTime.now().toString();
+		timestamp = timestamp.replace(DASH_SEPARATOR, EMPTY_TEXT).replace(T_TEXT, EMPTY_TEXT)
+				.replace(TWO_POINT_SEPARATOR, EMPTY_TEXT);
+		timestamp = timestamp.substring(0, timestamp.indexOf(POINT));
+		return timestamp;
+	}
+
+	/**
 	 * Create a new scenario file to store commands.
 	 *
+	 * @param scenarioName
+	 *            the scenario folder name.
 	 * @throws IOException
 	 *             if it fails to create the file.
 	 */
-	public static void createNewCommandFile() throws IOException {
-		String timestamp = LocalDateTime.now().toString();
-		timestamp = timestamp.replace("-", "").replace("T", "").replace(":", ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		timestamp = timestamp.substring(0, timestamp.indexOf(".")); //$NON-NLS-1$
-		subfolder = timestamp;
+	public static void createNewCommandFile(String scenarioName) throws IOException {
+
+		if (scenarioName != null && !scenarioName.isEmpty()) {
+			subfolder = scenarioName;
+		} else {
+			subfolder = getDefaultScenarioName();
+		}
 		File file = Paths.get(Menu.getInstance().getFolder(), subfolder, "scenario.steps").toFile(); //$NON-NLS-1$
 		if (!file.exists() && !new File(file.getParent()).exists()) {
 			new File(file.getParent()).mkdirs();

@@ -6,7 +6,7 @@
 -->
 
 <ivy-module version="2.0" xmlns:ea="http://www.easyant.org" xmlns:ej="https://developer.microej.com" ej:version="2.0.0">
-	<info organisation="ej.tool.frontpanel" module="fp-test-automation-tool" status="integration" revision="2.2.0">
+	<info organisation="ej.tool.frontpanel" module="fp-test-automation-tool" status="integration" revision="2.3.0">
 		<ea:build organisation="com.is2t.easyant.buildtypes" module="build-std-javalib" revision="2.0.+"/>
 	</info>
 	<configurations defaultconfmapping="default->default;provided->provided">

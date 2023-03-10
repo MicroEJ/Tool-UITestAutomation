@@ -3,16 +3,12 @@
 .. This library is provided in source code for use, modification and test, subject to license terms.
 .. Any modification of the source code will break MicroEJ Corp. warranties on the whole library.
 
-.. image:: https://shields.microej.com/endpoint?url=https://repository.microej.com/packages/badges/sdk_5.4.json
-   :alt: sdk_5.4 badge
-   :align: left
-
-.. image:: https://shields.microej.com/endpoint?url=https://repository.microej.com/packages/badges/arch_7.14.json
-   :alt: arch_7.14 badge
+.. image:: https://shields.microej.com/endpoint?url=https://repository.microej.com/packages/badges/sdk_5.7.json
+   :alt: sdk_5.7 badge
    :align: left
 
 .. image:: https://shields.microej.com/endpoint?url=https://repository.microej.com/packages/badges/gui_3.json
-   :alt: arch_7.14 badge
+   :alt: gui_3 badge
    :align: left
 
 ==========

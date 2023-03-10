@@ -16,4 +16,4 @@ multibuild:
       MODULE_DIR: "TestAutomationJUnitLibrary"
   - name: fp-test-automation-tool
     variables:
-      MODULE_DIR: "TestAutomationTool"
+      MODULE_DIR: " TestAutomationTool"

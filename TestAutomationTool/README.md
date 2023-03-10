@@ -1,13 +1,21 @@
 # Overview
 
-This repository provides an automated tool for UI testing.  It is used to record scenario of events (on `Pointer` , `Button` and `LongButton`) and replay the scenario. While replaying a scenario, this tool can also compare the screen with screenshots captured while recording scenario.
+This repository provides an automated tool for UI testing.
+
+It is used to record scenario of events (on `Pointer` , `Button` , `LongButton` and `Joystick`) and replay the scenario. While replaying a scenario, this tool can also compare the screen with screenshots captured while recording scenario.
+
+Scenario can be stored in a custom path or a default path specified in application properties.
 
 ![TAT](TAT.png "Test Automation Tool")
 
 # Architecture
 
-This module extends the classes `Pointer` , `Button` and `LongButton` of the `FrontPanel` then the tool overrides its events and adds a recording step before sending the event to the MicroEJ Application. It can also capture a screenshot so when the user replays it, they will have a point to compare the current screen with the screen captured during the recording process. The screen capture process stores the current displayed pixels in a .raw file.
-The replay process is done by replicating an event from the `Pointer` or `Button` or `LongButton` by getting the widget by its label name and calling the event recorded.
+This module extends the classes `Pointer` , `Button` , `LongButton` and `Joystick` of the `FrontPanel`. It overrides the FrontPanel events and adds a recording step before sending the event to the MicroEJ Application. 
+
+The tool can capture screenshots while recording a scenario. This allows to perform screen comparison during a scenario replay.
+Screenshots are saved in .png format.
+
+The replay process is done by replicating an event from the `Pointer` or `Button` or `LongButton` or `Joystick` event recorded.
 
 # Usage
 
@@ -16,7 +24,7 @@ The replay process is done by replicating an event from the `Pointer` or `Button
 - Add the following line to the platform-fp's `module.ivy`:
 
    ```xml
-       <dependency org="ej.tool.frontpanel" name="fp-test-automation-tool" rev="2.1.0"/>
+       <dependency org="ej.tool.frontpanel" name="fp-test-automation-tool" rev="2.3.0"/>
    ```
 - Update the Front Panel file(s) (`.fp` in `src/main/resources`) to record and simulate `Pointer` , `Button` and `LongButton` events:
 
@@ -25,31 +33,77 @@ The replay process is done by replicating an event from the `Pointer` or `Button
   - Replace `ej.fp.widget.Button` by `ej.fp.widget.recorder.RecorderButton`.
 
   - Replace `ej.fp.widget.LongButton` by `ej.fp.widget.recorder.RecorderLongButton`.
+  - Replace `ej.fp.widget.Joystick` by `ej.fp.widget.recorder.Joystick`.
 
 - Build the platform-configuration project.
 
 - Update the application launchers to use the new platform.
 
+- Add the following line to the `common.properties` file of the application to specify the recording default folder:
+
+   ```
+       mock.ej.library.test.path=${launcher.properties.dir}/../src/test/tat
+   ```
+
 ### Recording
 
-To record a scenario press the record button (center button). All triggered events within the Display (and `RecorderButton` if used) are recorded. Click on the screenshot button (right button) to take a screenshot for comparison while recording.
+To record a scenario press the ``Record`` button. All triggered events are recorded. 
+Click on the ``Screenshot`` button to take a screenshot. The screenshot will be compared to the application screen when replaying the scenario.
 
-All the files are stored under `$USER_HOME/.microej/frontPanelRecorder` in subfolders representing their timestamp of creation. The following files are available:
+Recorded scenarios are stored under `$USER_HOME/.microej/frontPanelRecorder` by default.
+
+The property `mock.ej.library.test.path` can be set to define a custom folder:
+- The property must be set in an application property file (e.g. `build/common.properties`).
+- For example, set the property as follows to store the recorded scenario in the `src/test/tat/` folder of the application project:
+  - `mock.ej.library.test.path=${launcher.properties.dir}/../src/test/tat` 
+
+The following files are available:
   - `scenario.steps` contains all the commands recorded.
-  - `screenshotTIMESTAMP.raw` are screenshot images taken when recording.
+  - `screenshotTIMESTAMP.png` are screenshot images taken when recording.
   - `testTIMESTAMP.report` are the reports generated after the execution of the scenario.
 
-The `.raw` format is a raw bytes file that stores all the pixels in sequence. They are store in order `Alpha`, `Red`, `Green` and `Blue`. `Alpha` is the transparency component of each pixel, `Red` is the red component, `Green` is the green component and `Blue` is the blue component.
-The `testTIMESTAMP.report` files has the results of all screenshot comparisons, it can have two results:
+The `testTIMESTAMP.report` files stores the results of all screenshot comparisons, it can have two results:
   - Screen test number TIMESTAMP ended with success.
   - Screen test number TIMESTAMP ended with with fail exiting player.
-When a test fails it will stop execution of the player so it will not have the result message of any tests after the failed one.
+
+When a test fails it will stop the execution of the player.
 
 ### Playing
 
 To play a scenario:
-- Select a scenario from the `Scenario List` (below the buttons)
-- Press the play button (left button) to play the selected scenario
+- Select a scenario from the `Scenario List`,
+- Press the ``Play`` button to play the selected scenario.
+
+### Override Mode
+
+The override mode can be used to automatically replace recorded screenshots with new ones while replaying a scenario.
+
+To override the screenshots of a scenario:
+- Select a scenario from the `Scenario List`.
+- Press the ``Override`` button to override the selected scenario screenshots.
+
+### Mask Mode
+
+The mask mode can be used to mask a screen area before taking a screenshot (e.g. hide the time as it changes permanently).
+
+The following features are available:
+- Add one or more masks on the same screenshot.
+- Give a name to each mask.
+- Choose the mask color through a color choice list.
+- Add, delete or rename a mask.
+
+To set the screenshot Mask:
+- Check `Enable mask`.
+- Enter the mask coordinates and size.
+- While recording, click on the screenshot button to take a screenshot with the mask parameters. The Mask settings will be stored in the `.steps` file.
+
+Note: the recording can be paused using the pause button while setting the mask parameters.
+
+### Update recording path
+
+To update the recording path:
+- Press the ``Browse...`` button.
+- Select the folder where to store scenarios.
 
 # Requirements
 
@@ -71,5 +125,5 @@ Cannot be used on embedded devices.
 
 ---  
 _Markdown_   
-_Copyright 2021-2022 MicroEJ Corp. All rights reserved._
+_Copyright 2021-2023 MicroEJ Corp. All rights reserved._
 _Use of this source code is governed by a BSD-style license that can be found with this software._

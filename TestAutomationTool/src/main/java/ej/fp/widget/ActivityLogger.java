@@ -1,7 +1,7 @@
 /*
  * Java
  *
- * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+ * Copyright 2021-2023 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.fp.widget;
@@ -12,7 +12,9 @@ import javax.swing.text.JTextComponent;
  * Log past activities made by the user when recording.
  */
 public class ActivityLogger {
-	private final String[] pastActivities = new String[6];
+	private static final int ACTIVITIES_LENGTH = 6;
+
+	private final String[] pastActivities = new String[ACTIVITIES_LENGTH];
 	private final JTextComponent jTextPane;
 
 	private int pointer;
@@ -39,7 +41,8 @@ public class ActivityLogger {
 	 *
 	 */
 	public void push(String activity) {
-		this.pastActivities[Math.abs(this.pointer++ % this.pastActivities.length)] = activity;
+		this.pastActivities[Math.abs(this.pointer % this.pastActivities.length)] = activity;
+		this.pointer = this.pointer + 1;
 		StringBuilder activitiesTextBuilder = new StringBuilder();
 		for (int i = 0; i < this.pastActivities.length; i++) {
 			activitiesTextBuilder.append(this.pastActivities[Math.abs((i + this.pointer) % this.pastActivities.length)]
@@ -47,4 +50,5 @@ public class ActivityLogger {
 		}
 		this.jTextPane.setText(activitiesTextBuilder.toString());
 	}
+
 }

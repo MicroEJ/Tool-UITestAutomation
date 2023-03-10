@@ -1,7 +1,7 @@
 /*
  * Java
  *
- * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+ * Copyright 2021-2023 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.fp.widget.command;
@@ -10,17 +10,17 @@ import ej.fp.Device;
 import ej.fp.Widget;
 
 /**
- * Command that represents a user interaction
+ * Command that represents a user interaction.
  *
  * @param <T>
- *            a widget extension
+ *            a widget extension.
  */
 public abstract class Command<T extends Widget> {
 
 	/**
 	 * Base type for listeners executable by Command.
 	 */
-	public static interface Listener {
+	public interface Listener {
 		// Just for this type information
 	}
 
@@ -50,7 +50,7 @@ public abstract class Command<T extends Widget> {
 	public abstract void execute() throws CommandExecutionException;
 
 	/**
-	 * Returns the actual type of T
+	 * Returns the actual type of T.
 	 *
 	 * @return actual class of type T
 	 */
@@ -60,7 +60,7 @@ public abstract class Command<T extends Widget> {
 	 * Retrieves a widget of type T and label if specified, or the first widget of type T if label is null.
 	 *
 	 * @param label
-	 *            widget identifier
+	 *            widget identifier.
 	 * @return the expected widget or null if it could not be found
 	 */
 	protected T getWidget(String label) {

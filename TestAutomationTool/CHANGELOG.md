@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2023-03-10
+
+### Added
+
+ - Add the possibility to change recording path.
+ - Add property to set default recording path.
+ - Add the possibility to set Mask properties when taking screenshot.
+ - Add RecorderJoystick to record Joystick buttons command.
+
 ## [2.2.0] - 2022-09-08
 
 ### Added
@@ -41,5 +50,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   
 ---  
 _Markdown_   
-_Copyright 2021-2022 MicroEJ Corp. All rights reserved._
+_Copyright 2021-2023 MicroEJ Corp. All rights reserved._
 _Use of this source code is governed by a BSD-style license that can be found with this software._

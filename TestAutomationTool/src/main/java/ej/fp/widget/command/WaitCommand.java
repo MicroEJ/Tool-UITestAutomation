@@ -1,7 +1,7 @@
 /*
  * Java
  *
- * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+ * Copyright 2021-2023 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.fp.widget.command;
@@ -10,9 +10,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ej.fp.Widget;
+import ej.fp.widget.Menu;
 
 /**
- * Represents a wait/delay command with the interval the user took between interactions
+ * Represents a wait/delay command with the interval the user took between interactions.
  */
 public class WaitCommand extends Command<Widget> {
 
@@ -38,7 +39,13 @@ public class WaitCommand extends Command<Widget> {
 	 */
 	public static long updateLastEventTime() {
 		long currentTimeMillis = System.currentTimeMillis();
-		long lastEventTime = currentTimeMillis - lastEventTimestamp;
+		long pausedTime = 0;
+		if (Menu.getInstance().didUseLatestPauseTime()) {
+			pausedTime = Menu.getInstance().getRecordingEndPauseTime()
+					- Menu.getInstance().getRecordingStartPauseTime();
+			Menu.getInstance().setUseLatestPauseTime(false);
+		}
+		long lastEventTime = currentTimeMillis - lastEventTimestamp - pausedTime;
 		lastEventTimestamp = currentTimeMillis;
 		return lastEventTime;
 	}

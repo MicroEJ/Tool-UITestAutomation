@@ -1,9 +1,8 @@
 /*
  * Java
  *
- * Copyright 2022 MicroEJ Corp. All rights reserved.
- * This library is provided in source code for use, modification and test, subject to license terms.
- * Any modification of the source code will break MicroEJ Corp. warranties on the whole library.
+ * Copyright 2022-2023 MicroEJ Corp. All rights reserved.
+ * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.fp.widget.command;
 
@@ -42,11 +41,11 @@ public abstract class LongButtonCommand extends Command<RecorderLongButton> {
 	 * Creates a button command with the specified label (id).
 	 *
 	 * @param <T>
-	 *            type which extends ButtonCommand
+	 *            type which extends ButtonCommand.
 	 * @param clazz
-	 *            actual type of the command to be created
+	 *            actual type of the command to be created.
 	 * @param label
-	 *            widget's id
+	 *            widget's id.
 	 * @return the command
 	 */
 	public static <T extends LongButtonCommand> T build(Class<T> clazz, String label) {
@@ -56,7 +55,7 @@ public abstract class LongButtonCommand extends Command<RecorderLongButton> {
 			command.label = label;
 		} catch (InstantiationException | IllegalAccessException e) {
 			Logger.getAnonymousLogger().log(Level.SEVERE, e.getMessage(), e);
-			Menu.getInstance().toggleRecordState();
+			Menu.getInstance().toggleRecordState(null);
 		}
 		return command;
 	}

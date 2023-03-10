@@ -1,13 +1,15 @@
 /*
  * Java
  *
- * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+ * Copyright 2021-2023 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.fp.widget.command;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Handles the Test Automation Tool's ej.fp.widget.command package messages strings.
@@ -16,6 +18,11 @@ import java.util.ResourceBundle;
 	private static final String BUNDLE_NAME = "commandMessages"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
+
+	/**
+	 * The main logger of this package.
+	 */
+	protected static final Logger LOGGER = Logger.getLogger(Messages.class.getName());
 
 	/**
 	 * Start of the message of screen test successful.
@@ -60,6 +67,8 @@ import java.util.ResourceBundle;
 		try {
 			return RESOURCE_BUNDLE.getString(key);
 		} catch (MissingResourceException e) {
+			String msg = "MissingResourceException with key : " + key; //$NON-NLS-1$
+			LOGGER.log(Level.WARNING, msg, e);
 			return '!' + key + '!';
 		}
 	}

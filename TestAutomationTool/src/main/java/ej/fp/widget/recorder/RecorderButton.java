@@ -1,7 +1,7 @@
 /*
  * Java
  *
- * Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+ * Copyright 2021-2023 MicroEJ Corp. All rights reserved.
  * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.fp.widget.recorder;
@@ -23,6 +23,8 @@ import ej.fp.widget.command.CommandRecorder;
 		@WidgetAttribute(name = "listenerClass", isOptional = true) })
 public class RecorderButton extends Button implements CommandRecorder<RecorderButton.ButtonListener> {
 
+	private ButtonListener listener;
+
 	@Override
 	public void mousePressed(int x, int y, MouseButton button) {
 		Menu.getInstance().saveCommand(ButtonCommand.build(ButtonCommand.Press.class, this.getLabel()));
@@ -34,8 +36,6 @@ public class RecorderButton extends Button implements CommandRecorder<RecorderBu
 		Menu.getInstance().saveCommand(ButtonCommand.build(ButtonCommand.Release.class, this.getLabel()));
 		super.mouseReleased(x, y, button);
 	}
-
-	private ButtonListener listener;
 
 	/**
 	 * Button recorder listener.

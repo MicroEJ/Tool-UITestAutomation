@@ -1,9 +1,8 @@
 /*
  * Java
  *
- * Copyright 2022 MicroEJ Corp. All rights reserved.
- * This library is provided in source code for use, modification and test, subject to license terms.
- * Any modification of the source code will break MicroEJ Corp. warranties on the whole library.
+ * Copyright 2022-2023 MicroEJ Corp. All rights reserved.
+ * Use of this source code is governed by a BSD-style license that can be found with this software.
  */
 package ej.fp.widget.recorder;
 
@@ -24,6 +23,8 @@ import ej.fp.widget.command.LongButtonCommand;
 		@WidgetAttribute(name = "listenerClass", isOptional = true) })
 public class RecorderLongButton extends LongButton implements CommandRecorder<RecorderLongButton.ButtonListener> {
 
+	private ButtonListener listener;
+
 	@Override
 	public void mousePressed(int x, int y, MouseButton button) {
 		Menu.getInstance().saveCommand(LongButtonCommand.build(LongButtonCommand.Press.class, this.getLabel()));
@@ -36,8 +37,6 @@ public class RecorderLongButton extends LongButton implements CommandRecorder<Re
 		super.mouseReleased(x, y, button);
 	}
 
-	private ButtonListener listener;
-
 	/**
 	 * Button recorder listener.
 	 */
@@ -49,18 +48,24 @@ public class RecorderLongButton extends LongButton implements CommandRecorder<Re
 		}
 
 		/**
-		 * Executes a button press.
-		 */
-		public void press() {
-			this.button.mousePressed(0, 0, MouseButton.FIRST_BUTTON);
-		}
-
-		/**
 		 * Executes a button release.
 		 */
 		public void release() {
 			this.button.mouseReleased(0, 0, MouseButton.FIRST_BUTTON);
 		}
+
+		/**
+		 * Executes a button press.
+		 */
+		public void press() {
+			this.button.mousePressed(0, 0, MouseButton.FIRST_BUTTON);
+		}
+	}
+
+	@Override
+	public void start() {
+		super.start();
+		Menu.getInstance();
 	}
 
 	@Override
@@ -69,11 +74,5 @@ public class RecorderLongButton extends LongButton implements CommandRecorder<Re
 			this.listener = new ButtonListener(this);
 		}
 		return this.listener;
-	}
-
-	@Override
-	public void start() {
-		super.start();
-		Menu.getInstance();
 	}
 }
